@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebasic/screens/add_note_screen.dart';
+import 'package:firebasic/screens/edit_note_screen.dart';
 import 'package:firebasic/screens/home_screen.dart';
 import 'package:firebasic/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Note',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.teal,
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         AddNoteScreen.routeName: (_) => AddNoteScreen(),
+        EditNoteScreen.routeName: (_) => EditNoteScreen(),
       },
     );
   }

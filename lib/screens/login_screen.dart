@@ -93,6 +93,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void dispose() {
+    phoneController.dispose();
+    otpController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -110,19 +117,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget mobileFormWidget(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          TextField(
-            controller: phoneController,
-            decoration: InputDecoration(labelText: "Masukan Nomor Telp."),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 0.5,
+                color: Colors.blue,
+              ),
+            ),
+            child: TextField(
+              controller: phoneController,
+              decoration: InputDecoration(
+                hintText: "Masukan Nomor Telp. contoh +62XXXX",
+                border: InputBorder.none,
+              ),
+              style: TextStyle(fontSize: 18),
+              keyboardType: TextInputType.phone,
+            ),
           ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            child: Text('Proses'),
-            onPressed: () {
-              kirimOtp();
-            },
+          SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              child: Text('LOGIN'),
+              onPressed: () {
+                kirimOtp();
+              },
+            ),
           ),
         ],
       ),
@@ -131,19 +155,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget otpFormWidget(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          TextField(
-            controller: otpController,
-            decoration: InputDecoration(hintText: "Masukan Kode OTP"),
+          Container(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 0.5,
+                color: Colors.blue,
+              ),
+            ),
+            child: TextField(
+              controller: otpController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: "Masukan Kode OTP",
+                border: InputBorder.none,
+              ),
+              style: TextStyle(fontSize: 18),
+            ),
           ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            child: Text('Verifikasi'),
-            onPressed: () {
-              loginWithPhone(context);
-            },
+          SizedBox(height: 20),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              child: Text('Verifikasi kode OTP'),
+              onPressed: () {
+                loginWithPhone(context);
+              },
+            ),
           )
         ],
       ),

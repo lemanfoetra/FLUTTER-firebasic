@@ -13,7 +13,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final titleController = TextEditingController();
   final valueControlller = TextEditingController();
   bool savingProcess = false;
+  var documentId;
 
+  ///
+  /// Save note
+  ///
   Future<void> saveNote() async {
     setState(() {
       savingProcess = true;
@@ -28,19 +32,29 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       "created_at": Timestamp.now(),
       "updated_at": Timestamp.now(),
     };
-    var result = await FirebaseFirestore.instance.collection('noted').add(data);
+    if (documentId != null) {
+      await FirebaseFirestore.instance
+          .collection('noted')
+          .doc(documentId)
+          .update(data);
+    } else {
+      var result =
+          await FirebaseFirestore.instance.collection('noted').add(data);
+      documentId = result.id;
+    }
     setState(() {
       savingProcess = false;
     });
-    print(result);
-    Navigator.of(context).pop();
+    //Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Note'),
+        title: Text(
+          titleController.text.isEmpty ? "Tambah Note" :  titleController.text,
+        ),
         actions: [
           savingProcess
               ? Container(
@@ -79,20 +93,19 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     hintText: "Judul note",
                     border: InputBorder.none,
                   ),
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
                 ),
               ),
-              SizedBox(height: 10),
+              Divider(),
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black12,
-                    width: 0.5,
-                  ),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 padding: EdgeInsets.only(
-                  left: 15,
-                  right: 15,
+                  left: 5,
+                  right: 5,
                   top: 5,
                   bottom: 5,
                 ),
